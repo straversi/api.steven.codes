@@ -95,18 +95,25 @@ async function getSpotifyAccessToken() {
   return data.access_token;
 }
 
-function formatTrack(track) {
+function formatTrack(track, options = {}) {
   if (!track) {
     return null;
   }
 
   const image = track.album?.images?.[0]?.url ?? null;
-
-  return {
+  const formattedTrack = {
     name: track.name,
     artist: track.artists?.map((artist) => artist.name).join(', ') ?? null,
+    songUrl: track.external_urls?.spotify ?? null,
+    artistUrl: track.artists?.[0]?.external_urls?.spotify ?? null,
     albumArtwork: image
   };
+
+  if (options.progressMs != null) {
+    formattedTrack.progressMs = options.progressMs;
+  }
+
+  return formattedTrack;
 }
 
 async function getCurrentlyPlaying() {
@@ -134,7 +141,7 @@ async function getCurrentlyPlaying() {
     return null;
   }
 
-  return formatTrack(data.item);
+  return formatTrack(data.item, { progressMs: data.progress_ms });
 }
 
 async function getRecentlyPlayed() {

@@ -61,7 +61,10 @@ When Spotify has a currently playing track:
   "track": {
     "name": "Song Name",
     "artist": "Artist Name",
-    "albumArtwork": "https://i.scdn.co/image/..."
+    "songUrl": "https://open.spotify.com/track/...",
+    "artistUrl": "https://open.spotify.com/artist/...",
+    "albumArtwork": "https://i.scdn.co/image/...",
+    "progressMs": 42137
   }
 }
 ```
@@ -76,6 +79,8 @@ played track when one is available:
   "track": {
     "name": "Previous Song Name",
     "artist": "Artist Name",
+    "songUrl": "https://open.spotify.com/track/...",
+    "artistUrl": "https://open.spotify.com/artist/...",
     "albumArtwork": "https://i.scdn.co/image/..."
   }
 }
