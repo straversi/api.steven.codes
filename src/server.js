@@ -12,10 +12,43 @@ const {
 } = process.env;
 
 const CURRENTLY_PLAYING_CACHE_TTL_MS = 10_000;
+const ALLOWED_ORIGIN_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1', 'steven.codes']);
 
 let cachedCurrentlyPlayingResponse = null;
 let cachedCurrentlyPlayingExpiresAt = 0;
 let pendingCurrentlyPlayingRequest = null;
+
+function isAllowedOrigin(origin) {
+  if (!origin) {
+    return false;
+  }
+
+  try {
+    return ALLOWED_ORIGIN_HOSTNAMES.has(new URL(origin).hostname);
+  } catch {
+    return false;
+  }
+}
+
+app.use((request, response, next) => {
+  const origin = request.get('Origin');
+
+  if (isAllowedOrigin(origin)) {
+    response.set({
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': request.get('Access-Control-Request-Headers') ?? 'Content-Type',
+      Vary: 'Origin'
+    });
+  }
+
+  if (request.method === 'OPTIONS') {
+    response.sendStatus(204);
+    return;
+  }
+
+  next();
+});
 
 function requiredSpotifyConfig() {
   const missing = [];
