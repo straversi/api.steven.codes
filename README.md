@@ -100,9 +100,9 @@ When nothing is currently playing and Spotify has no recent track available:
 GET /currently-reading
 ```
 
-This endpoint reads the public Goodreads updates RSS feed. A “started reading”
-item is treated as currently reading. Responses are cached in memory for one
-hour.
+This endpoint reads the public Goodreads updates RSS feed. “Started reading”
+and “is currently reading” items are treated as currently reading. Responses
+are cached in memory for one hour.
 
 ```json
 {
@@ -115,7 +115,7 @@ hour.
 }
 ```
 
-When there is no “started reading” item, the endpoint falls back to the first
+When there is no current-reading item, the endpoint falls back to the first
 “finished reading” item in the feed:
 
 ```json

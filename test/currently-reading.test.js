@@ -38,6 +38,19 @@ test('maps the first started-reading item to currently-reading', () => {
   });
 });
 
+test('maps an is-currently-reading item to currently-reading', () => {
+  const xml = rss(item("Steven Traversi is currently reading 'Circe'"));
+
+  assert.deepEqual(parseReadingFeed(xml), {
+    status: 'currently-reading',
+    book: {
+      name: 'Circe',
+      author: 'Madeline Miller',
+      image: 'https://www.goodreads.com/circe.jpg'
+    }
+  });
+});
+
 test('prefers started-reading over finished-reading', () => {
   const xml = rss(`
     ${item("Steven Traversi finished reading 'Finished Book'", { name: 'Finished Book' })}

@@ -111,9 +111,12 @@ export function parseReadingFeed(xml) {
   }
 
   const items = asArray(feed?.rss?.channel?.item);
-  const currentlyReadingItem = items.find((item) =>
-    item.title?.startsWith('Steven Traversi started reading ')
-  );
+  const currentlyReadingItem = items.find((item) => {
+    const title = item.title ?? '';
+
+    return title.startsWith('Steven Traversi started reading ') ||
+      title.startsWith('Steven Traversi is currently reading ');
+  });
 
   if (currentlyReadingItem) {
     return {
