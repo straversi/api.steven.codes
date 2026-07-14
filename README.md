@@ -95,3 +95,44 @@ When nothing is currently playing and Spotify has no recent track available:
   "track": null
 }
 ```
+
+```http
+GET /currently-reading
+```
+
+This endpoint reads the public Goodreads updates RSS feed. A “started reading”
+item is treated as currently reading. Its response is not cached.
+
+```json
+{
+  "status": "currently-reading",
+  "book": {
+    "name": "Circe",
+    "author": "Madeline Miller",
+    "image": "https://i.gr-assets.com/images/..."
+  }
+}
+```
+
+When there is no “started reading” item, the endpoint falls back to the first
+“finished reading” item in the feed:
+
+```json
+{
+  "status": "just-finished",
+  "book": {
+    "name": "Circe",
+    "author": "Madeline Miller",
+    "image": "https://i.gr-assets.com/images/..."
+  }
+}
+```
+
+When neither is available, it returns:
+
+```json
+{
+  "status": null,
+  "book": null
+}
+```
