@@ -3,6 +3,11 @@ import { XMLParser, XMLValidator } from 'fast-xml-parser';
 
 const GOODREADS_UPDATES_RSS_URL = 'https://www.goodreads.com/user/updates_rss/176655250';
 const GOODREADS_USER_AGENT = 'api.steven.codes/1.0 (+https://api.steven.codes)';
+const CURRENTLY_READING_CACHE_TTL_MS = 60 * 60 * 1_000;
+
+let cachedResponse = null;
+let cachedResponseExpiresAt = 0;
+let pendingRequest = null;
 
 const xmlParser = new XMLParser({
   attributeNamePrefix: '@_',
@@ -163,11 +168,33 @@ async function getReadingStatus() {
   return parseReadingFeed(xml);
 }
 
+async function getCachedReadingStatus() {
+  const now = Date.now();
+
+  if (cachedResponse && now < cachedResponseExpiresAt) {
+    return cachedResponse;
+  }
+
+  if (!pendingRequest) {
+    pendingRequest = getReadingStatus()
+      .then((result) => {
+        cachedResponse = result;
+        cachedResponseExpiresAt = Date.now() + CURRENTLY_READING_CACHE_TTL_MS;
+        return result;
+      })
+      .finally(() => {
+        pendingRequest = null;
+      });
+  }
+
+  return pendingRequest;
+}
+
 const currentlyReadingRouter = Router();
 
 currentlyReadingRouter.get('/', async (_request, response, next) => {
   try {
-    const result = await getReadingStatus();
+    const result = await getCachedReadingStatus();
     response.json(result);
   } catch (error) {
     next(error);

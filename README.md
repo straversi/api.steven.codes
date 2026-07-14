@@ -101,7 +101,8 @@ GET /currently-reading
 ```
 
 This endpoint reads the public Goodreads updates RSS feed. A “started reading”
-item is treated as currently reading. Its response is not cached.
+item is treated as currently reading. Responses are cached in memory for one
+hour.
 
 ```json
 {
