@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>City Facts</title>
+    <link rel="stylesheet" href="/city-facts/styles.css">
+    <script src="/city-facts/app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Contribute to City Guesser</h1>
+        <p>
+          See your facts in
+          <a href="https://steven.codes/city-guesser/">City Guesser</a>
+          by adding them here. Add as many as you like!
+        </p>
+      </header>
+
+      <section class="city-card" aria-labelledby="selected-city-heading">
+        <div class="city-details">
+          <h2 id="selected-city-heading">
+            <a id="city-search-link" href="https://duckduckgo.com" target="_blank" rel="noopener noreferrer">
+              Choosing a city…
+            </a>
+          </h2>
+          <p id="selected-country"></p>
+        </div>
+        <div class="city-card-actions">
+          <button id="random-city" type="button">Random</button>
+          <button id="open-city-search" class="primary" type="button">Search cities</button>
+        </div>
+      </section>
+
+      <form id="fact-form" novalidate>
+        <div class="field fact-field">
+          <div class="label-row">
+            <label for="fact">What's something neat about this city? <span class="required-marker" aria-hidden="true">*</span></label>
+            <span id="fact-count" class="hint">0 / 1000</span>
+          </div>
+          <textarea id="fact" name="fact" rows="4" maxlength="1000" required></textarea>
+          <p id="fact-error" class="error" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <label for="wikipedia-url">Related wikipedia article <span class="required-marker" aria-hidden="true">*</span></label>
+          <input
+            id="wikipedia-url"
+            name="wikipediaUrl"
+            type="url"
+            inputmode="url"
+            placeholder="https://en.wikipedia.org/wiki/…"
+            required
+          >
+          <p id="wikipedia-error" class="error" aria-live="polite"></p>
+        </div>
+
+        <button id="submit-fact" class="primary" type="submit">Submit</button>
+        <p id="form-status" class="form-status" aria-live="polite"></p>
+        <p id="contributor-status" class="contributor-status" hidden>
+          Contributing as <span id="contributor-name"></span>.
+          <button id="change-name" class="link-button" type="button">Change</button>
+        </p>
+        <button id="open-leaderboard" class="link-button leaderboard-link" type="button">Leaderboard</button>
+      </form>
+    </main>
+
+    <dialog id="city-search-dialog" class="city-search-dialog">
+      <div class="search-dialog-header">
+        <h2>Search cities</h2>
+        <button id="close-city-search" class="close-button" type="button" aria-label="Close search">×</button>
+      </div>
+      <label for="city-search">City or country</label>
+      <input
+        id="city-search"
+        type="search"
+        maxlength="100"
+        autocomplete="off"
+        placeholder="Search cities or countries…"
+        aria-describedby="search-status"
+      >
+      <p id="search-status" class="hint" aria-live="polite"></p>
+      <ul id="search-results" class="search-results" aria-label="City search results"></ul>
+    </dialog>
+
+    <dialog id="leaderboard-dialog">
+      <div class="search-dialog-header">
+        <h2>Leaderboard</h2>
+        <button id="close-leaderboard" class="close-button" type="button" aria-label="Close leaderboard">×</button>
+      </div>
+      <p id="leaderboard-status" class="hint" aria-live="polite"></p>
+      <ol id="leaderboard-list" class="leaderboard-list"></ol>
+    </dialog>
+
+    <dialog id="name-dialog">
+      <form id="name-form" novalidate>
+        <h2>What’s your name?</h2>
+        <p>We’ll remember it on this device for your next fact.</p>
+        <label for="visitor-name">Name <span class="required-marker" aria-hidden="true">*</span></label>
+        <input id="visitor-name" name="name" maxlength="31" autocomplete="name" required>
+        <p id="name-error" class="error" aria-live="polite"></p>
+        <div class="dialog-actions">
+          <button id="cancel-name" type="button">Cancel</button>
+          <button class="primary" type="submit">Continue</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

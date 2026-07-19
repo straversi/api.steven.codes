@@ -1,0 +1,370 @@
+:root {
+  color-scheme: dark;
+  --bg: #101113;
+  --panel: #191c20;
+  --panel-strong: #21262b;
+  --text: #f1f3ed;
+  --muted: #a9b0a5;
+  --line: #323840;
+  --accent: #e8c468;
+  --accent-strong: #f0a33a;
+  --bad: #ff6f61;
+  --accent-text: #17130a;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  width: min(100% - 2rem, 42rem);
+  margin: 0 auto;
+  padding: 2.5rem 0 4rem;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0.4rem;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  line-height: 1.1;
+}
+
+h2 {
+  margin-bottom: 0.35rem;
+  font-size: 1.25rem;
+}
+
+header {
+  margin-bottom: 2rem;
+}
+
+header a {
+  color: var(--accent);
+}
+
+.city-card {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--panel);
+}
+
+.city-card h2 {
+  margin-bottom: 0.25rem;
+  font-size: clamp(2rem, 8vw, 2.75rem);
+  line-height: 1.1;
+}
+
+.city-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+#city-search-link {
+  color: inherit;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+.city-card-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.city-card-actions button {
+  flex: 1;
+}
+
+.city-card-actions #open-city-search {
+  flex: 1.5;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 650;
+}
+
+.required-marker {
+  color: var(--accent);
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--panel-strong);
+  color: var(--text);
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgb(232 196 104 / 45%);
+  outline-offset: 2px;
+}
+
+button {
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--panel-strong);
+  color: var(--text);
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+button:disabled {
+  cursor: wait;
+  color: #787163;
+  background: #3a362c;
+}
+
+button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+button.primary:hover:not(:disabled) {
+  color: var(--accent-text);
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+button.link-button {
+  min-height: 0;
+  padding: 0;
+  color: var(--accent);
+  background: transparent;
+  border: 0;
+  font-weight: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+button.link-button:hover:not(:disabled) {
+  color: var(--accent-strong);
+  background: transparent;
+  border-color: transparent;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.fact-field {
+  margin-bottom: 0.5rem;
+}
+
+.fact-field .error:empty {
+  min-height: 0;
+  margin-top: 0;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hint,
+.error,
+.form-status {
+  min-height: 1.4rem;
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+}
+
+.hint {
+  color: var(--muted);
+}
+
+.error {
+  color: var(--bad);
+}
+
+.form-status {
+  font-weight: 650;
+  margin-top: 0.55rem;
+}
+
+.form-status:empty {
+  min-height: 0;
+  margin: 0;
+}
+
+.contributor-status {
+  margin: 0.55rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.leaderboard-link {
+  display: block;
+  margin-top: 0.15rem;
+}
+
+.leaderboard-list {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: leaderboard;
+}
+
+.leaderboard-list li {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  padding: 0.65rem 0;
+  counter-increment: leaderboard;
+}
+
+.leaderboard-list li::before {
+  color: var(--muted);
+  content: counter(leaderboard) ".";
+}
+
+.leaderboard-list li + li {
+  border-top: 1px solid var(--line);
+}
+
+.leaderboard-name {
+  overflow: hidden;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leaderboard-count {
+  color: var(--muted);
+}
+
+.search-results {
+  width: 100%;
+  max-height: 18rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--panel-strong);
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 30%);
+  list-style: none;
+}
+
+.search-results:empty {
+  display: none;
+}
+
+.search-results button {
+  width: 100%;
+  min-height: 0;
+  padding: 0.75rem;
+  border: 0;
+  border-radius: 0;
+  text-align: left;
+}
+
+.search-results li + li {
+  border-top: 1px solid var(--line);
+}
+
+.result-detail {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+dialog {
+  width: min(100% - 2rem, 28rem);
+  padding: 1.5rem;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 45%);
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 65%);
+}
+
+.city-search-dialog {
+  width: min(100% - 2rem, 36rem);
+}
+
+.search-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-dialog-header h2 {
+  margin-bottom: 0;
+}
+
+.close-button {
+  min-width: 2.75rem;
+  padding: 0.5rem;
+  border: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 34rem) {
+  main {
+    padding-top: 1.5rem;
+  }
+
+  #submit-fact {
+    width: 100%;
+  }
+}
