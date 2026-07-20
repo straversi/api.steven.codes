@@ -14,7 +14,6 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "fast-xml-parser": "^5.10.0",
-    "pg": "^8.22.0"
+    "fast-xml-parser": "^5.10.0"
   }
 }

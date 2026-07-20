@@ -1,27 +1,19 @@
 # api.steven.codes
 
-Small Express service for collecting city facts and exposing personal media
-status endpoints.
+Simple Express server for your currently playing Spotify track, with a fallback
+to your most recently played track.
 
 ## Setup
 
-Requires Node 24 and PostgreSQL.
+Requires Node 24.
 
 ```sh
 npm install
 cp .env.example .env
-createdb api_steven_codes
 ```
 
-Set `DATABASE_URL` in `.env` to your local database. The default example is:
-
-```text
-postgresql://localhost/api_steven_codes
-```
-
-The facts table and its city index are created automatically when the server
-starts. To use the Spotify endpoint, also fill in a Spotify app client ID,
-client secret, and refresh token with these scopes:
+Fill in `.env` with a Spotify app client ID, client secret, and a refresh token
+that has these scopes:
 
 ```text
 user-read-currently-playing user-read-recently-played
@@ -35,16 +27,14 @@ npm start
 
 ## Deploy
 
-This repo includes a Render Blueprint in `render.yaml` for a free web service
-and a paid `basic-256mb` Render Postgres database.
+This repo includes a Render Blueprint in `render.yaml` for a free web service.
 
 1. Push the repo to GitHub.
 2. In Render, create a new Blueprint from the repo.
-3. Enter the requested Spotify secret environment variables:
+3. Enter the requested secret environment variables:
    `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, and `SPOTIFY_REFRESH_TOKEN`.
-   Render supplies `DATABASE_URL` from the Blueprint database automatically.
-4. Review the paid database resource and deploy the Blueprint.
-5. In your DNS provider, add a CNAME record if it is not already present:
+4. Deploy the service.
+5. In your DNS provider, add a CNAME record:
 
 ```text
 Name: api
@@ -53,32 +43,7 @@ Value: api-steven-codes.onrender.com
 
 Use the exact `onrender.com` hostname Render assigns if it differs.
 
-## City facts app
-
-Open:
-
-```text
-http://localhost:3000/city-facts
-```
-
-The app chooses a city, lets visitors search the bundled `data/cities.json`,
-and stores submitted facts by the selected city's numeric ID. Visitor names
-are remembered only in that browser's local storage.
-
-The same-origin app uses these endpoints:
-
-```http
-GET /city-facts/api/cities/random
-GET /city-facts/api/cities/search?q=paris
-GET /city-facts/api/facts/leaderboard
-POST /city-facts/api/facts
-```
-
-Facts accept only non-empty text up to 1000 characters and links under
-`en.wikipedia.org/wiki/`. Names are requested on first submission and must be
-shorter than 32 characters.
-
-## Media endpoints
+## Endpoint
 
 ```http
 GET /currently-playing

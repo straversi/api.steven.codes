@@ -1,27 +1,64 @@
 import 'dotenv/config';
-import { createApp } from './app.js';
-import { createFactRepository } from './db.js';
+import express from 'express';
+import currentlyPlayingRouter from './routes/currently-playing.js';
+import currentlyReadingRouter from './routes/currently-reading.js';
+
+const app = express();
 
 const {
-  DATABASE_URL,
   HOST = '0.0.0.0',
   PORT = 3000
 } = process.env;
 
-const factRepository = createFactRepository(DATABASE_URL);
-await factRepository.initialize();
+const ALLOWED_ORIGIN_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1', 'steven.codes']);
 
-const app = createApp({ factRepository });
-const server = app.listen(PORT, HOST, () => {
-  console.log(`Server listening on http://${HOST}:${PORT}`);
-});
+function isAllowedOrigin(origin) {
+  if (!origin) {
+    return false;
+  }
 
-async function shutDown() {
-  server.close(async () => {
-    await factRepository.close();
-    process.exit(0);
-  });
+  try {
+    return ALLOWED_ORIGIN_HOSTNAMES.has(new URL(origin).hostname);
+  } catch {
+    return false;
+  }
 }
 
-process.on('SIGINT', shutDown);
-process.on('SIGTERM', shutDown);
+app.use((request, response, next) => {
+  const origin = request.get('Origin');
+
+  if (isAllowedOrigin(origin)) {
+    response.set({
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': request.get('Access-Control-Request-Headers') ?? 'Content-Type',
+      Vary: 'Origin'
+    });
+  }
+
+  if (request.method === 'OPTIONS') {
+    response.sendStatus(204);
+    return;
+  }
+
+  next();
+});
+
+app.get('/healthz', (_request, response) => {
+  response.json({ ok: true });
+});
+
+app.use('/currently-playing', currentlyPlayingRouter);
+app.use('/currently-reading', currentlyReadingRouter);
+
+app.use((error, _request, response, _next) => {
+  const statusCode = error.statusCode ?? 500;
+
+  response.status(statusCode).json({
+    error: error.message
+  });
+});
+
+app.listen(PORT, HOST, () => {
+  console.log(`Server listening on http://${HOST}:${PORT}`);
+});

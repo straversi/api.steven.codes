@@ -12,20 +12,9 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 24
-      - key: DATABASE_URL
-        fromDatabase:
-          name: api-steven-codes-db
-          property: connectionString
       - key: SPOTIFY_CLIENT_ID
         sync: false
       - key: SPOTIFY_CLIENT_SECRET
         sync: false
       - key: SPOTIFY_REFRESH_TOKEN
         sync: false
-
-databases:
-  - name: api-steven-codes-db
-    plan: basic-256mb
-    region: oregon
-    databaseName: api_steven_codes
-    ipAllowList: []
