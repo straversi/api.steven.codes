@@ -35,20 +35,16 @@ npm start
 
 ## Deploy
 
+This repo includes a Render Blueprint in `render.yaml` for a free web service
+and a paid `basic-256mb` Render Postgres database.
+
 1. Push the repo to GitHub.
-2. Create or open the Render Web Service connected to this repository. Use
-   `npm ci` as the build command, `npm start` as the start command, and
-   `/healthz` as the health check path.
-3. Create a Render Postgres database in the same region as the web service.
-   Use `api-steven-codes-db` as its name, `api_steven_codes` as its database
-   name, and the `basic-256mb` instance type.
-4. Copy the database's internal URL and add it to the web service as the
-   `DATABASE_URL` environment variable.
-5. Set `NODE_VERSION` to `24` and add the Spotify environment variables:
+2. In Render, create a new Blueprint from the repo.
+3. Enter the requested Spotify secret environment variables:
    `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, and `SPOTIFY_REFRESH_TOKEN`.
-6. Deploy the web service. The facts table and index are created automatically
-   during startup.
-7. In your DNS provider, add a CNAME record if it is not already present:
+   Render supplies `DATABASE_URL` from the Blueprint database automatically.
+4. Review the paid database resource and deploy the Blueprint.
+5. In your DNS provider, add a CNAME record if it is not already present:
 
 ```text
 Name: api
